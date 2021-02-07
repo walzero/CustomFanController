@@ -3,7 +3,9 @@ package com.walterrezende.customfancontroller
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
+import androidx.core.content.ContextCompat
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
@@ -28,6 +30,7 @@ class DialView @JvmOverloads constructor(
     private var fanSpeed = FanSpeed.OFF         // The active selection.
     // position variable which will be used to draw label and indicator circle position
     private val pointPosition: PointF = PointF(0.0f, 0.0f)
+    private val colorTypedValue = TypedValue()
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
@@ -48,7 +51,8 @@ class DialView @JvmOverloads constructor(
 
         val markerRadius = radius + RADIUS_OFFSET_INDICATOR
         pointPosition.computeXYForSpeed(fanSpeed, markerRadius)
-        paint.color = Color.BLACK
+        context.theme.resolveAttribute(R.attr.colorOnSecondary, colorTypedValue, true)
+        paint.color = colorTypedValue.data
         canvas.drawCircle(pointPosition.x, pointPosition.y, radius/12, paint)
 
         val labelRadius = radius + RADIUS_OFFSET_LABEL
